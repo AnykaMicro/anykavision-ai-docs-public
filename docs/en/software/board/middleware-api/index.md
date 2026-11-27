@@ -1,6 +1,6 @@
 # Platform Middleware API Reference
 
-This part is the API reference for the KM02G series multimedia middleware: common services, memory, threads, logging, audio, video, OSD, IPU, muxing and demuxing, motion detection, UUID and smart vision processing. Each module describes its APIs, data structures and error codes. The headers are in the SDK's `platform/include` and the libraries in `platform/lib`. The module pages are still being translated; the Chinese version is complete.
+This part is the API reference for the KM02G series multimedia middleware: common services, memory, threads, logging, audio, video, OSD, IPU, muxing and demuxing, motion detection, UUID and smart vision processing. Each module describes its APIs, data structures and error codes. The headers are in the SDK's `platform/include` and the libraries in `platform/lib`.
 
 ```{toctree}
 :maxdepth: 1
