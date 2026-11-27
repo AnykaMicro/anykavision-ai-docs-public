@@ -6,7 +6,7 @@ Documentation for **AnykaVision AI V1.00**, a development platform for AI camera
 
 - **Documentation release:** 1.0.0
 - **Website:** <https://anykamicro.github.io/anykavision-ai-docs-public/>
-- **Languages:** Simplified Chinese (complete) and English (translation in progress)
+- **Languages:** Simplified Chinese and English
 
 ## Repository layout
 
@@ -33,17 +33,17 @@ python3 -m venv .venv
 .venv/bin/pip install --require-hashes -r requirements.txt
 .venv/bin/sphinx-build -W -c docs -D language=en docs/en _build/html/en
 .venv/bin/sphinx-build -W -c docs -D language=zh_CN docs/zh_CN _build/html/zh_CN
-cp docs/index.html _build/html/
+cp docs/index.html LICENSE _build/html/
 python3 tools/check_links.py . _build/html
 ```
 
 Then open `_build/html/index.html`. Build both languages: the language switcher links between them. Content still waiting for Anyka (removed figures, text that needs a rewrite) is kept in the sources but left out of the site; add `-t anyka_review` to the `sphinx-build` commands to see it.
 
-GitHub Actions builds and checks both languages on every pull request and push to `main`. With the repository variable `PAGES_ENABLED` set to `true`, a successful push build on `main` publishes the Simplified Chinese site. After a named reviewer signs off on the English translation, `en` can be added to `PUBLISH_LANGS` in `.github/workflows/pages.yml`.
+GitHub Actions builds and checks both languages on every pull request and push to `main`. With the repository variable `PAGES_ENABLED` set to `true`, a successful push build on `main` publishes both languages.
 
 ## Translating
 
-1. Pick a page marked "Translation pending" in `docs/en`.
+1. Find the English page under `docs/en`.
 2. Translate it from the same path in `docs/zh_CN`, using the terms in [docs/glossary.md](docs/glossary.md).
 3. Keep headings, code blocks, tables and anchors in the same structure as the Chinese page.
 
@@ -55,7 +55,9 @@ The Anyka_Glasses companion app, the AK1090 firmware and the reference board's h
 
 ## Licence
 
-[Apache License 2.0](LICENSE)
+The documentation and first-party code in this repository are available under the [Apache License 2.0](LICENSE). Guangzhou Anyka Microelectronics Co., Ltd. retains copyright in the material it owns.
+
+For the separately distributed SDK and release assets, see the [SDK licence and notices](https://github.com/AnykaMicro/sdk-km02g/blob/main/NOTICE) and any terms supplied with the individual assets.
 
 ---
 
@@ -67,7 +69,7 @@ The Anyka_Glasses companion app, the AK1090 firmware and the reference board's h
 
 - **文档版本：** 1.0.0
 - **网站：** <https://anykamicro.github.io/anykavision-ai-docs-public/>
-- **语言：** 简体中文（完整）与英文（翻译中）
+- **语言：** 简体中文与英文
 
 ## 仓库结构
 
@@ -94,17 +96,17 @@ python3 -m venv .venv
 .venv/bin/pip install --require-hashes -r requirements.txt
 .venv/bin/sphinx-build -W -c docs -D language=en docs/en _build/html/en
 .venv/bin/sphinx-build -W -c docs -D language=zh_CN docs/zh_CN _build/html/zh_CN
-cp docs/index.html _build/html/
+cp docs/index.html LICENSE _build/html/
 python3 tools/check_links.py . _build/html
 ```
 
 然后打开 `_build/html/index.html`。请同时构建两种语言，语言切换链接依赖两者。仍待安凯处理的内容（已移除的图片、需要改写的文字）保留在源文件中，但不会出现在站点上；在 `sphinx-build` 命令中加上 `-t anyka_review` 即可查看。
 
-GitHub Actions 会在每个拉取请求和每次推送到 `main` 时编译并检查中英文文档。仓库变量 `PAGES_ENABLED` 设为 `true` 后，推送到 `main` 并通过检查即可自动发布简体中文版。英文翻译经指定审阅人确认后，可将 `en` 加入 `.github/workflows/pages.yml` 中的 `PUBLISH_LANGS`。
+GitHub Actions 会在每个拉取请求和每次推送到 `main` 时编译并检查中英文文档。仓库变量 `PAGES_ENABLED` 设为 `true` 后，推送到 `main` 并通过检查即可自动发布中英文文档。
 
 ## 参与翻译
 
-1. 在 `docs/en` 中选择标记为“Translation pending”的页面。
+1. 在 `docs/en` 中找到对应的英文页面。
 2. 对照 `docs/zh_CN` 中相同路径的页面进行翻译，术语请参考 [docs/glossary.md](docs/glossary.md)。
 3. 标题、代码块、表格和锚点的结构须与中文页面保持一致。
 
@@ -116,4 +118,6 @@ Anyka_Glasses 配套 APP、AK1090 固件以及产品板硬件设计资料尚未�
 
 ## 许可证
 
-[Apache License 2.0](LICENSE)
+本仓库的文档及自有代码采用 [Apache License 2.0](LICENSE)。广州安凯微电子股份有限公司保留其拥有的材料的著作权。
+
+单独分发的 SDK 及其发布附件适用 [SDK 许可证和声明](https://github.com/AnykaMicro/sdk-km02g/blob/main/NOTICE)以及各附件随附的条款。
