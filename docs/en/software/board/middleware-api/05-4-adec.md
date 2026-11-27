@@ -37,7 +37,6 @@
 | AK_MPI_ADEC_GetBufStatus | Gets decoder buffer information. |
 | AK_MPI_ADEC_RegisterDecoder | Registers a decoder. |
 | AK_MPI_ADEC_SetLibPrintLevel | Sets the decoding-library log level. |
-| <br/>                          |                     |
 
 > **Source note:** The source lists `AK_MPI_ADEC_PrintRuntimeStatus`, but this page has no corresponding API section and the supplied public headers do not declare it. Later source headings and call-order text spell the end-of-stream API as `AK_MPI_ADEC_SendEndOfStream`; use the case-sensitive name declared by the syntax and header: `AK_MPI_ADEC_SendEndofStream`.
 
@@ -994,7 +993,6 @@ AK_S32 AK_MPI_ADEC_ClearDecodeBuf(AK_S32 s32AdecUserId);
 | AK_MPI_ADEC_GetBufStatus | May be called at any point after AK_MPI_ADEC_Opem; takes effect immediately |
 | AK_MPI_ADEC_RegisterDecoder | May be called before AK_MPI_ADEC_Opem |
 | AK_MPI_AENC_SetLibPrintLevel | No dependency; recommended before AK_MPI_ADEC_Opem |
-| <br/>                        |                                 |
 
 > **Source note:** In this source-derived table, `AK_MPI_ADEC_Opem` means `AK_MPI_ADEC_Open`, and `AK_MPI_AENC_SetLibPrintLevel` means the page/header-declared `AK_MPI_ADEC_SetLibPrintLevel`.
 

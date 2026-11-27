@@ -13,6 +13,7 @@ CODE = re.compile(FENCED.pattern + r'|`[^`\n]+`', re.S | re.M)  # fenced and inl
 LINK = re.compile(r'!?\[[^\]]*\]\(([^)\s]+)\)|<(?:a|img)\s[^>]*?(?:href|src)="([^"]+)"')
 HEADING = re.compile(r'^#{1,6} +(.+?)\s*$', re.M)
 TARGET = re.compile(r'^\(([\w-]+)\)=\s*$', re.M)  # MyST explicit target
+CONFLICT = re.compile(r'^(?:<{7}\s|={7}$|>{7}\s)', re.M)  # Git merge conflict markers
 IMG_EXT = ('.png', '.jpg', '.jpeg', '.svg', '.gif')
 errors = []
 
@@ -42,7 +43,10 @@ for d, dirs, fs in os.walk(REPO):
 for p in md_files:
     labels.update(TARGET.findall(open(p, encoding='utf-8').read()))
 for p in md_files:
-    for m in LINK.finditer(CODE.sub('', open(p, encoding='utf-8').read())):
+    raw = open(p, encoding='utf-8').read()
+    if CONFLICT.search(raw):
+        errors.append(f'merge conflict marker: {os.path.relpath(p, REPO)}')
+    for m in LINK.finditer(CODE.sub('', raw)):
         url = m.group(1) or m.group(2)
         if re.match(r'[a-z]+:', url):
             continue

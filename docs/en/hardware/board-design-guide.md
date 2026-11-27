@@ -343,11 +343,8 @@ Figure 3-4 Soft-start reference circuit
 
 2. AK1090/KM02G communication-UART considerations:
 
-```default
-1. Cross-connect RXD and TXD. A series resistor no greater than 100 Ω may be used for EMI optimization.
-
-2. While KM02G is powered off and sleeping, drive the AK1090-connected UART pins low to prevent back-powering KM02G and disrupting its power-on reset.
-```
+   1. Cross-connect RXD and TXD. A series resistor no greater than 100 Ω may be used for EMI optimization.
+   2. While KM02G is powered off and sleeping, drive the AK1090-connected UART pins low to prevent back-powering KM02G and disrupting its power-on reset.
 
 ## Wi-Fi Module Design Considerations
 
@@ -365,14 +362,12 @@ The platform uses gyroscope data to correct image deformation and recording shak
 2. With I2C, use 4.7-10 kΩ external pull-ups.
 3. Device-selection requirements:
 
-```default
-1. Range: ±2000 dps
-2. Output data rate: ≥800 Hz
-3. ADC resolution: 16 bits
-4. Operating temperature: -40 °C to +85 °C
-5. Sensitivity: ±1%
-6. Sensitivity temperature coefficient: ±0.05%/°C
-```
+   1. Range: ±2000 dps
+   2. Output data rate: ≥800 Hz
+   3. ADC resolution: 16 bits
+   4. Operating temperature: -40 °C to +85 °C
+   5. Sensitivity: ±1%
+   6. Sensitivity temperature coefficient: ±0.05%/°C
 
 4. CIS-module installation:
 

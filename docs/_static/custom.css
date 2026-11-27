@@ -1,0 +1,14 @@
+/* Ensure transparent-background SVG diagrams remain legible in dark mode */
+@media (prefers-color-scheme: dark) {
+  body:not([data-theme="light"]) article img[src$=".svg"] {
+    background-color: #ffffff;
+    padding: 8px;
+    border-radius: 6px;
+  }
+}
+
+body[data-theme="dark"] article img[src$=".svg"] {
+  background-color: #ffffff;
+  padding: 8px;
+  border-radius: 6px;
+}

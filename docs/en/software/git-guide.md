@@ -14,21 +14,19 @@ Git is a distributed version-control system widely used for code management and 
 
 ### Install Git
 
-> **Source-formatting note:** The supplied source concatenates some distinct shell commands and `.gitignore` entries; this translation places each original item on its own line without changing its arguments or intent.
-
 - **Windows**: Visit [git-scm.com](https://git-scm.com/), download the installer, and run it.
 - **macOS**:
 
-    BASH
-
-    `brew install git`
+  ```bash
+  brew install git
+  ```
 
 - **Linux (Ubuntu/Debian)**:
 
-    ```bash
-    sudo apt update
-    sudo apt install git
-    ```
+  ```bash
+  sudo apt update
+  sudo apt install git
+  ```
 
 ### Configure User Information
 
@@ -41,9 +39,9 @@ git config --global user.email "youremail@example.com"
 
 View the current configuration:
 
-BASH
-
-`git config --list`
+```bash
+git config --list
+```
 
 ---
 
@@ -69,9 +67,9 @@ git commit -m "Initial commit"
 
 ### View Status
 
-BASH
-
-`git status`
+```bash
+git status
+```
 
 ### Add Files to the Staging Area
 
@@ -79,26 +77,27 @@ Add a single file or all modified files:
 
 ```bash
 git add filename.txt
+# Or stage all modified files
 git add .
 ```
 
 ### Commit Changes
 
-BASH
-
-`git commit -m "Describe what you did"`
+```bash
+git commit -m "Describe what you did"
+```
 
 ### View Commit History
 
-BASH
-
-`git log`
+```bash
+git log
+```
 
 Or display a more compact one-line summary for each commit:
 
-BASH
-
-`git log --oneline`
+```bash
+git log --oneline
+```
 
 ---
 
@@ -106,35 +105,35 @@ BASH
 
 ### List All Branches
 
-BASH
-
-`git branch`
+```bash
+git branch
+```
 
 The branch marked with an asterisk (`*`) is the current branch.
 
 ### Create a Branch
 
-BASH
-
-`git checkout -b feature_branch_name`
+```bash
+git checkout -b feature_branch_name
+```
 
 This creates and switches to the new branch.
 
 ### Switch Branches
 
-BASH
-
-`git checkout main`
+```bash
+git checkout main
+```
 
 This switches back to the `main` branch or another existing branch.
 
 ### Merge a Branch
 
-Merge `feature_branch` into the current branch (usually `main`):
+Merge `feature_branch_name` into the current branch (usually `main`):
 
-BASH
-
-`git merge feature_branch_name`
+```bash
+git merge feature_branch_name
+```
 
 If conflicts occur, edit the affected files manually before continuing the merge.
 
@@ -142,9 +141,9 @@ If conflicts occur, edit the affected files manually before continuing the merge
 
 Delete a completed local feature branch:
 
-BASH
-
-`git branch -d feature_branch_name`
+```bash
+git branch -d feature_branch_name
+```
 
 To force deletion of a branch that has not been fully merged, use `-D` instead of `-d`.
 
@@ -154,15 +153,15 @@ To force deletion of a branch that has not been fully merged, use `-D` instead o
 
 To push a local project to a hosting service such as GitHub or GitLab, first add the remote repository URL:
 
-BASH
-
-`git remote add origin https://github.com/username/repository.git`
+```bash
+git remote add origin https://github.com/username/repository.git
+```
 
 Push the local content to the remote server:
 
-BASH
-
-`git push -u origin main`
+```bash
+git push -u origin main
+```
 
 Afterward, simply run `git push` to synchronize later updates.
 
@@ -183,9 +182,9 @@ cd forked-repo-name
 
 Configure the upstream remote so that you can fetch changes from the original project:
 
-BASH
-
-`git remote add upstream https://github.com/original-owner/original-repo-name.git`
+```bash
+git remote add upstream https://github.com/original-owner/original-repo-name.git
+```
 
 Regularly fetch upstream changes to stay synchronized:
 
@@ -203,15 +202,15 @@ git merge upstream/main
 
 Undo only the commit without affecting working-tree files:
 
-BASH
-
-`git reset --soft HEAD~1`
+```bash
+git reset --soft HEAD~1
+```
 
 Discard the commit and restore the file changes completely:
 
-BASH
-
-`git reset --hard HEAD~1`
+```bash
+git reset --hard HEAD~1
+```
 
 ### How Do I Keep Sensitive Files from Being Tracked?
 

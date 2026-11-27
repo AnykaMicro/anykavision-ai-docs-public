@@ -37,7 +37,6 @@
 | AK_MPI_ADEC_GetBufStatus       | 获取解码模块缓存区信息         |
 | AK_MPI_ADEC_RegisterDecoder    | 注册解码器               |
 | AK_MPI_ADEC_SetLibPrintLevel   | 设置解码库打印等级           |
-| <br/>                          |                     |
 
 ## 数据结构
 
@@ -993,7 +992,6 @@ AK_S32 AK_MPI_ADEC_ClearDecodeBuf(AK_S32 s32AdecUserId);
 | AK_MPI_ADEC_GetBufStatus     | AK_MPI_ADEC_Opem之后随时可以调用，立即生效   |
 | AK_MPI_ADEC_RegisterDecoder  | AK_MPI_ADEC_Opem之前可以调用          |
 | AK_MPI_AENC_SetLibPrintLevel | 无依赖，建议在AK_MPI_ADEC_Opem之前调用     |
-| <br/>                        |                                 |
 
 ## ak_adec_sample使用示例
 
