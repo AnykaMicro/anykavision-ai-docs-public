@@ -8,7 +8,7 @@ AI拍摄眼镜采用三层通信架构：手机APP、AK1090系列芯片和KM02G�
 
 1. 命令列表中的'\\'表示该命令不携带参数，'×'表示该命令无需接收响应；
 
-2. 命令列表中部分命令采用<span style="background-color: yellow;">黄色底纹</span>标识，表明该命令已完成定义但仍在开发中；
+2. 命令列表中部分命令采用<span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">黄色底纹</span>标识，表明该命令已完成定义但仍在开发中；
 
 3. 手机APP与KM02G系列芯片之间的命令支持灵活配置，包括增加、删除和修改操作。当AK1090系列芯片无需特殊处理时，可直接复用现有AK1090系列芯片代码，无需重新开发；
 
@@ -43,7 +43,7 @@ AI拍摄眼镜采用三层通信架构：手机APP、AK1090系列芯片和KM02G�
 | 字段  | 包头标志  | 命令码      | 数据长度     | 数据内容               | 校验和      |
 | --- | ----- | -------- | -------- | ------------------ | -------- |
 | 长度  | 1byte | 1byte    | 2bytes   | N bytes (N\<= 504) | 4bytes   |
-| 说明  | ‘@’   | 详见下方命令列表 | 数据内容size | 数据内容               | CRC32位校验 |
+| 说明  | ‘@’   | 详见下方命令列表 | 数据内容size | 数据内容               | CRC32位校验（当前未启用，详见5.4） |
 
 ### 2.2 命令列表
 
@@ -57,7 +57,7 @@ AI拍摄眼镜采用三层通信架构：手机APP、AK1090系列芯片和KM02G�
 | 0x7F      | AP配网                                | uint8_t function; //用于指示AP配网所作用的场景 char[] ssid;//保存ssid信息，以\0结尾 char[] password;//保存密码，以\0结尾 function值定义如下： 0x00：绑定设备 0x01：图库管理 0x02：视频直播 0x03：RTSP调图 0x04：RTSP调录像 | \                                        |
 | 0x80~0xF2 | 客户使用                                | \                                                                                                                                                                  | \                                        |
 | 0xF5      | 用户配置，含：U盘等模式配置、录像相关配置等              | uint8_t mode;//默认配置0x01 uint16_t duration;//录像定时时长，单位秒，默认60。 mode值定义如下： 0x01：U盘模式 0x02：UVC拍照调试 0x03：UVC录像调试                                                        | uint8_t result; 0x00：成功 0x01：失败          |
-| <span style="background-color: yellow;">0xF6</span>      | 工厂产测模式                              | \                                                                                                                                                                  | uint8_t result; 0x00：成功 0x01：失败          |
+| <span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0xF6</span>      | 工厂产测模式                              | \                                                                                                                                                                  | uint8_t result; 0x00：成功 0x01：失败          |
 | 0xF7      | 恢复出厂模式                              | \                                                                                                                                                                  | uint8_t result; 0x00：成功 0x01：失败          |
 | 0xF8      | 设置本地时间（含时区和时间）                      | int16_t minutes;//时区偏移分钟数 (如: -480表示UTC-8) uint32_t tick;//时间戳，从1970年1月1日00:00:00 UTC开始计算的秒数，可解析为RTC时间。                                                            | uint8_t result; 0x00：成功 0x01：失败          |
 | 0xF9      | AK1090系列芯片OTA升级                             | \                                                                                                                                                                  | ×                                        |
@@ -129,15 +129,11 @@ AI拍摄眼镜采用三层通信架构：手机APP、AK1090系列芯片和KM02G�
 
 格式说明：
 
-\- SyncHead：同步头，长度为1个字节，内容固定为0xAA
-
-\- Command：命令字或指示字，长度为1个字节。详见下方命令列表
-
-\- ParamLen：参数长度，长度为2个字节，内容为0则表示不带参数
-
-\- Crc：校验位，校验payload的内容
-
-\- Parameter：参数内容，长度为0-255字节（SDK 中 `quick_glass_info_t` 的参数缓冲区为255字节，Linux应用发送超过255字节的参数时直接报错返回）
+- SyncHead：同步头，长度为1个字节，内容固定为0xAA
+- Command：命令字或指示字，长度为1个字节。详见下方命令列表
+- ParamLen：参数长度，长度为2个字节，内容为0则表示不带参数
+- Crc：校验位，校验payload的内容（当前未启用，可填 `0x00000000`，详见5.4）
+- Parameter：参数内容，长度为0-255字节（SDK 中 `quick_glass_info_t` 的参数缓冲区为255字节，Linux应用发送超过255字节的参数时直接报错返回）
 
 ### 3.2 命令列表
 
@@ -153,29 +149,30 @@ AK1090系列芯片(简称B)和KM02G系列芯片(简称K)的所有通信命令如
 | 0x02      | 设置本地时间（含时区和时间） | int16_t minutes; //时区偏移分钟数 (如: -480表示UTC-8) uint16_t year;//年(如:2023) uint8_t month;//月(1-12) uint8_t day;//日(1-31) uint8_t hour;//时(0-23) uint8_t min;//分(0-59) uint8_t sec;// 秒 (0-59)                                                | \                                                                                                 |
 | 0x03      | 插入USB时的相关模式定义  | uint8_t mode;//USB模式配置，只在接电脑时生效。默认配置0x01 0x01：U盘模式 0x02：UVC拍照调试 0x03：UVC录像调试                                                                                                                                                            | IND_COMP附加参数如下： uint8_t mode;//当前生效的模式 0x00：充电模式（USB接充电器） 0x01：U盘模式 0x02：UVC拍照调试 0x03：UVC录像调试     |
 | 0x04      | 保留特殊命令使用       | \                                                                                                                                                                                                                                       | \                                                                                                 |
-| <span style="background-color: yellow;">0x05 </span>     | 设备解绑           | \                                                                                                                                                                                                                                       | \                                                                                                 |
-| <span style="background-color: yellow;">0x06</span>      | 获取KM02G系列芯片固件版本号   | \                                                                                                                                                                                                                                       | IND_COMP附加参数如下： char[] version;//以\0结尾。                                                           |
-| <span style="background-color: yellow;">0x07 </span>     | 获取图片、视频数量和音频数量 | \                                                                                                                                                                                                                                       | IND_COMP附加参数如下： uint16_t photo_count;//图片数量uint16_t video_count;//视频数量uint16_t audio_count;//音频数量 |
+| <span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0x05 </span>     | 设备解绑           | \                                                                                                                                                                                                                                       | \                                                                                                 |
+| <span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0x06</span>      | 获取KM02G系列芯片固件版本号   | \                                                                                                                                                                                                                                       | IND_COMP附加参数如下： char[] version;//以\0结尾。                                                           |
+| <span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0x07 </span>     | 获取图片、视频数量和音频数量 | \                                                                                                                                                                                                                                       | IND_COMP附加参数如下： uint16_t photo_count;//图片数量uint16_t video_count;//视频数量uint16_t audio_count;//音频数量 |
 | 0x08      | AP配网           | uint8_t function; //用于指示AP配网所作用的场景 char[] ssid;//保存ssid信息，以\0结尾 char[] password;//保存密码，以\0结尾 function值定义如下： 0x00：绑定设备 0x01：图库管理 0x02：视频直播 0x03：RTSP调图 0x04：RTSP调录像                                                                      | \                                                                                                 |
-| <span style="background-color: yellow;">0x09 </span>     | AP断连           | \                                                                                                                                                                                                                                       | \                                                                                                 |
-| <span style="background-color: yellow;">0x0A </span>     | P2P配网          | uint8_t function; //用于指示P2P配网所作用的场景 char p2p_dev_name[];//以\0结尾 function值定义如下： 0x00：绑定设备 0x01：图库管理 0x02：视频直播 0x03：RTSP调图 0x04：RTSP调录像。SDK中0x8A只区分0x01（图库管理）和0x02（视频直播），其他值（含0x03、0x04）均按0x00（绑定设备）处理（见4.2.1） | \                                                                                                 |
-| <span style="background-color: yellow;">0x0B </span>     | P2P断连          | \                                                                                                                                                                                                                                       | \                                                                                                 |
-| <span style="background-color: yellow;">0x0C </span>     | KM02G系列芯片 OTA升级    | \                                                                                                                                                                                                                                       | \                                                                                                 |
+| <span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0x09 </span>     | AP断连           | \                                                                                                                                                                                                                                       | \                                                                                                 |
+| <span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0x0A </span>     | P2P配网          | uint8_t function; //用于指示P2P配网所作用的场景 char p2p_dev_name[];//以\0结尾 function值定义如下： 0x00：绑定设备 0x01：图库管理 0x02：视频直播 0x03：RTSP调图 0x04：RTSP调录像。SDK中0x8A只区分0x01（图库管理）和0x02（视频直播），其他值（含0x03、0x04）均按0x00（绑定设备）处理（见4.2.1） | \                                                                                                 |
+| <span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0x0B </span>     | P2P断连          | \                                                                                                                                                                                                                                       | \                                                                                                 |
+| <span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0x0C </span>     | KM02G系列芯片 OTA升级    | \                                                                                                                                                                                                                                       | \                                                                                                 |
 | 0x0D      | 恢复出厂模式         | \                                                                                                                                                                                                                                       | \                                                                                                 |
-| <span style="background-color: yellow;">0x0E </span>     | 获取存储状态         | \                                                                                                                                                                                                                                       | IND_COMP附加参数如下： uint32_t total;//SD NAND总空间，单位KB uint32_t used;//SD NAND已用空间，单位KB                 |
-| <span style="background-color: yellow;">0x0F </span>     | 获取存储中某个目录的文件数量 |                                                                                                                                                                                                                                         | IND_COMP附加参数如下： uint16_t count;//文件数量                                                             |
+| <span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0x0E </span>     | 获取存储状态         | \                                                                                                                                                                                                                                       | IND_COMP附加参数如下： uint32_t total;//SD NAND总空间，单位KB uint32_t used;//SD NAND已用空间，单位KB                 |
+| <span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0x0F </span>     | 获取存储中某个目录的文件数量 |                                                                                                                                                                                                                                         | IND_COMP附加参数如下： uint16_t count;//文件数量                                                             |
 | 0x10~0x1F | 保留为特殊命令使用      | \                                                                                                                                                                                                                                       | \                                                                                                 |
 | 0x20~0x4F | 客户使用           | \                                                                                                                                                                                                                                       | \                                                                                                 |
 | 0x50~0x72 | 保留为特殊命令使用      | \                                                                                                                                                                                                                                       | \                                                                                                 |
-| <span style="background-color: yellow;">0x73</span>      | 工厂产测模式         | \                                                                                                                                                                                                                                       | \                                                                                                 |
+| <span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0x73</span>      | 工厂产测模式         | \                                                                                                                                                                                                                                       | \                                                                                                 |
 | 0x74      | 拍照             | int16_t minutes; //时区偏移分钟数 (如: -480表示UTC-8) uint16_t year;//年(如:2023) uint8_t month;//月(1-12) uint8_t day;//日(1-31) uint8_t hour;//时(0-23) uint8_t min;//分(0-59) uint8_t sec;// 秒 (0-59)                                                | \                                                                                                 |
 | 0x75      | 抓拍             | \                                                                                                                                                                                                                                       | \                                                                                                 |
 | 0x76      | 启动录像           | int32_t duration;//录像时长，单位秒。大于0时按该值录像，SDK不设上限；小于或等于0时按600秒录像。时间到会自动停止录像。 int16_t minutes; //时区偏移分钟数 (如: -480表示UTC-8) uint16_t year;//年(如:2023) uint8_t month;//月(1-12) uint8_t day;//日(1-31) uint8_t hour;//时(0-23) uint8_t min;//分(0-59) uint8_t sec;// 秒 (0-59) | \                                                                                                 |
 | 0x77      | 停止录像           | \                                                                                                                                                                                                                                       | \                                                                                                 |
-| <span style="background-color: yellow;">0x78</span>      | 启动录音           | int32_t duration;//录音时长，单位秒 int32_t min_duration;//最短录音时长，单位秒。SDK只取这两个值的低8位（按uint8_t处理，即0-255秒）。时间到会自动停止录音。                                                                                                                                                                                          | \                                                                                                 |
-| <span style="background-color: yellow;">0x79</span>      | 停止录音           | \                                                                                                                                                                                                                                       | \                                                                                                 |
+| <span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0x78</span>      | 启动录音           | int32_t duration;//录音时长，单位秒 int32_t min_duration;//最短录音时长，单位秒。SDK只取这两个值的低8位（按uint8_t处理，即0-255秒）。时间到会自动停止录音。                                                                                                                                                                                          | \                                                                                                 |
+| <span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0x79</span>      | 停止录音           | \                                                                                                                                                                                                                                       | \                                                                                                 |
 | 0x7A      | 对接收的数据包进行反馈    | 针对IND_UPLOAD_HEAD和IND_UPLOAD_PACK进行回复。如下： uint8_t result; 0x00：数据接收成功 0x01：数据接收失败                                                                                                                                                       | ×                                                                                                 |
 
+````{only} anyka_review
 ```{admonition} TODO
 :class: warning
 
@@ -183,10 +180,11 @@ SDK 定义了 AK1090 系列芯片命令 0x01–0x03 和 0x73–0x7F（`BT_CMD_*`
 
 The SDK defines AK1090 commands 0x01–0x03 and 0x73–0x7F (`BT_CMD_*`, `BT_IND_*`); its Linux app handles 0x01–0x03, 0x74, 0x76 and 0x77, and 0x78 and 0x79 only when `SOUND_REC_SUPPORT_ENABLE` is on (off by default). 0x04–0x0F are not defined in the SDK. The SDK defines these functions as APP commands instead: 0x85–0x8D correspond to 0x05–0x0D; 0x86, 0x88 and 0x8A–0x8D are implemented, and 0x85, 0x87 and 0x89 are defined but not implemented. Storage status and directory file count are APP commands 0x82 and 0x83 (see 4.2.1). Anyka to confirm how the AK1090 and RTT forward 0x04–0x0F.
 ```
+````
 
 #### 3.2.2 KM02G系列芯片发起的命令列表
 
-| Command | 命令说明                             | 请求参数（B =&gt; K）                                                                                                                        | 响应参数（B &lt;= K） |
+| Command | 命令说明                             | 请求参数（K =&gt; B）                                                                                                                        | 响应参数（K &lt;= B） |
 | ------- | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
 | 0x7B    | IND_READY命令，用于指示KM02G系列芯片已上电就绪       | 由linux应用发起。无参数                                                                                                                         | ×               |
 | 0x7C    | IND_ACK命令，用于确认指示                 | 由小系统发起。参数如下：uint8_t result; 0x00：命令接收成功 0x01：命令接收失败                                                                                    | ×               |
@@ -270,11 +268,11 @@ APP(简称A)和KM02G系列芯片(简称K)的所有通信命令如下所示。
     <td>int16_t file_count_type; //同请求的 type<br>int16_t file_count; //文件数量</td>
   </tr>
   <tr>
-    <td><span style="background-color: yellow;">0x84</span> </td>
+    <td><span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0x84</span> </td>
     <td colspan="3">导图（SDK 中已定义为 APP_CMD_IMPORT，暂未实现）</td>
   </tr>
   <tr>
-    <td><span style="background-color: yellow;">0x85</span> </td>
+    <td><span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0x85</span> </td>
     <td colspan="3">详见AK1090系列芯片和KM02G系列芯片的通信命令0x05</td>
   </tr>
   <tr>
@@ -282,7 +280,7 @@ APP(简称A)和KM02G系列芯片(简称K)的所有通信命令如下所示。
     <td colspan="3">详见AK1090系列芯片和KM02G系列芯片的通信命令0x06</td>
   </tr>
   <tr>
-    <td><span style="background-color: yellow;">0x87</span> </td>
+    <td><span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0x87</span> </td>
     <td colspan="3">详见AK1090系列芯片和KM02G系列芯片的通信命令0x07</td>
   </tr>
   <tr>
@@ -292,7 +290,7 @@ APP(简称A)和KM02G系列芯片(简称K)的所有通信命令如下所示。
     <td>同AK1090系列芯片和KM02G系列芯片的通信命令0x08</td>
   </tr>
   <tr>
-    <td><span style="background-color: yellow;">0x89</span> </td>
+    <td><span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0x89</span> </td>
     <td colspan="3">详见AK1090系列芯片和KM02G系列芯片的通信命令0x09</td>
   </tr>
   <tr>
@@ -316,7 +314,7 @@ APP(简称A)和KM02G系列芯片(简称K)的所有通信命令如下所示。
     <td colspan="3">详见AK1090系列芯片和KM02G系列芯片的通信命令0x0D</td>
   </tr>
   <tr>
-    <td><span style="background-color: yellow;">0x8E</span> </td>
+    <td><span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0x8E</span> </td>
     <td colspan="3">启动 RTSP（SDK 中已定义为 APP_CMD_START_RTSP，暂未实现）</td>
   </tr>
   <tr>
@@ -336,7 +334,7 @@ APP(简称A)和KM02G系列芯片(简称K)的所有通信命令如下所示。
     <td colspan="3">保留为特殊命令使用</td>
   </tr>
   <tr>
-    <td><span style="background-color: yellow;">0xF3</span> </td>
+    <td><span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0xF3</span> </td>
     <td colspan="3">详见AK1090系列芯片和KM02G系列芯片的通信命令0x73</td>
   </tr>
   <tr>
@@ -344,7 +342,7 @@ APP(简称A)和KM02G系列芯片(简称K)的所有通信命令如下所示。
     <td colspan="3">详见AK1090系列芯片和KM02G系列芯片的通信命令0x74</td>
   </tr>
   <tr>
-    <td><span style="background-color: yellow;">0xF5</span> </td>
+    <td><span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0xF5</span> </td>
     <td colspan="3">详见AK1090系列芯片和KM02G系列芯片的通信命令0x75</td>
   </tr>
   <tr>
@@ -356,11 +354,11 @@ APP(简称A)和KM02G系列芯片(简称K)的所有通信命令如下所示。
     <td colspan="3">详见AK1090系列芯片和KM02G系列芯片的通信命令0x77</td>
   </tr>
   <tr>
-    <td><span style="background-color: yellow;">0xF8</span> </td>
+    <td><span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0xF8</span> </td>
     <td colspan="3">详见AK1090系列芯片和KM02G系列芯片的通信命令0x78</td>
   </tr>
   <tr>
-    <td><span style="background-color: yellow;">0xF9</span> </td>
+    <td><span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0xF9</span> </td>
     <td colspan="3">详见AK1090系列芯片和KM02G系列芯片的通信命令0x79</td>
   </tr>
   <tr>
@@ -375,8 +373,8 @@ APP(简称A)和KM02G系列芯片(简称K)的所有通信命令如下所示。
   <tr>
     <th>Command</th>
     <th>命令说明</th>
-    <th>请求参数（A => K）</th>
-    <th>响应参数（A <= K）</th>
+    <th>请求参数（K => A）</th>
+    <th>响应参数（K <= A）</th>
   </tr>
   <tr>
     <td>0xFB </td>
@@ -387,11 +385,11 @@ APP(简称A)和KM02G系列芯片(简称K)的所有通信命令如下所示。
     <td colspan="3">详见AK1090系列芯片和KM02G系列芯片的通信命令0x7C</td>
   </tr>
   <tr>
-    <td><span style="background-color: yellow;">0xFD</span> </td>
+    <td><span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0xFD</span> </td>
     <td colspan="3">详见AK1090系列芯片和KM02G系列芯片的通信命令0x7D</td>
   </tr>
   <tr>
-    <td><span style="background-color: yellow;">0xFE</span> </td>
+    <td><span style="background-color: #fff3b0; color: #1a1a1a; padding: 0 3px; border-radius: 2px;">0xFE</span> </td>
     <td colspan="3">详见AK1090系列芯片和KM02G系列芯片的通信命令0x7E</td>
   </tr>
   <tr>

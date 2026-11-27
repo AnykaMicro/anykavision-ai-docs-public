@@ -29,9 +29,10 @@ python3 -I scripts/repack_toolchain.py \
     tools/toolchain-v1.00.tar.gz tools/riscv64-anyka-linux-musl.tar.gz
 ./scripts/get_toolchain.sh "$HOME/.local/opt"
 export PATH="$HOME/.local/opt/riscv64-anyka-linux-musl/bin:$PATH"
+riscv64-anyka-linux-musl-gcc --version
 ```
 
-新开终端后，重新执行最后一行 `export PATH`，或将它加入 `~/.bashrc`。
+`riscv64-anyka-linux-musl-gcc --version` 正常输出编译器版本即表示安装成功。新开终端后，重新执行 `export PATH` 这一行，或将它加入 `~/.bashrc`。
 
 ## 编译示例应用
 
@@ -49,12 +50,23 @@ cp -n rootfs/config/shadow rootfs/config.local/shadow
 openssl passwd -6
 ```
 
-打开 `rootfs/config.local/shadow`，把输出的密码哈希填入 `root` 行的第二个字段（前两个冒号之间）。保存后在 SDK 根目录编译。
+打开 `rootfs/config.local/shadow`，把输出的密码哈希填入 `root` 行的第二个字段（前两个冒号之间，替换原来的 `*`，例如 `root:$6$...:3652:0:99999:7:::`）。请保持 Unix（LF）换行符，避免在 Windows 编辑器中引入 CRLF 导致打包校验失败。
+
+`rootfs/config.local/` 已被 Git 忽略；打包配置分区时，该目录下的文件会覆盖 `rootfs/config/` 中的同名文件（`app_main_config.ini` 等本地调试配置也可放在此目录中）。保存后在 SDK 根目录编译：
 
 ```bash
 make
 ```
 
-**设备需要锁定 root 时**，保留 SDK 默认的 `shadow` 配置，直接运行 `ALLOW_LOCKED_ROOT=1 make`。用这个包升级会锁定目标设备的 root 登录。
+**设备需要锁定 root 时**，保留 SDK 默认的 `shadow` 配置，直接运行 `ALLOW_LOCKED_ROOT=1 make`。
+
+```{warning}
+`update.bin` 同时包含 RAMFS 和 CONFIG 两个分区。使用 `ALLOW_LOCKED_ROOT=1 make` 生成的升级包会锁定目标设备的 root 控制台登录。
+```
 
 生成的 OTA 升级包为 `tools/ota/update.bin`。同目录中的 `ramfs.img` 和 `usr.jffs2` 分别是 ramdisk 和配置分区镜像。将升级包写入设备的步骤见[固件烧写](firmware-flashing.md)。
+
+## 已知限制
+
+- 只有 `apps/ai_glass_demo/common.mk` 中默认的功能开关组合可以编译；关闭 EIS、RTSP 或录像功能目前无法编译。
+- `mtd-utils` 2.x 生成的 `usr.jffs2` 使用 8 KiB 擦除块（不支持旧版工具的 4 KiB），烧写后请在串口日志中确认配置分区挂载无 JFFS2 错误。

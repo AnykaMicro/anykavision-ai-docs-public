@@ -29,9 +29,10 @@ python3 -I scripts/repack_toolchain.py \
     tools/toolchain-v1.00.tar.gz tools/riscv64-anyka-linux-musl.tar.gz
 ./scripts/get_toolchain.sh "$HOME/.local/opt"
 export PATH="$HOME/.local/opt/riscv64-anyka-linux-musl/bin:$PATH"
+riscv64-anyka-linux-musl-gcc --version
 ```
 
-Run the last `export PATH` line in each new terminal, or add it to `~/.bashrc`.
+The last command should print the compiler version. Run the `export PATH` line in each new terminal, or add it to `~/.bashrc`.
 
 ## Build the demo application
 
@@ -49,12 +50,23 @@ cp -n rootfs/config/shadow rootfs/config.local/shadow
 openssl passwd -6
 ```
 
-Open `rootfs/config.local/shadow` and paste the password hash into the second field of the `root` line (between the first two colons). Save the file and build the image from the SDK root.
+Open `rootfs/config.local/shadow` and paste the password hash into the second field of the `root` line (between the first two colons, replacing `*`, e.g. `root:$6$...:3652:0:99999:7:::`). Keep Unix (LF) line endings: CRLF line endings cause the packaging script to fail.
+
+Git ignores `rootfs/config.local/`; any files placed there override same-named files from `rootfs/config/` in the configuration image (including local debug overrides such as `app_main_config.ini`). Save the file and build the image from the SDK root:
 
 ```bash
 make
 ```
 
-**To keep root locked**, leave the SDK's default `shadow` configuration in place and run `ALLOW_LOCKED_ROOT=1 make`. Applying this package locks root login on the target device.
+**To keep root locked**, leave the SDK's default `shadow` configuration in place and run `ALLOW_LOCKED_ROOT=1 make`.
+
+```{warning}
+`update.bin` carries both the RAMFS and CONFIG partitions. Applying an update built with `ALLOW_LOCKED_ROOT=1 make` locks root console login on the target device.
+```
 
 The OTA package is `tools/ota/update.bin`. The same directory contains the ramdisk (`ramfs.img`) and the configuration partition image (`usr.jffs2`). To install the update on the device, follow [Firmware Flashing](firmware-flashing.md).
+
+## Known limitations
+
+- Only the default feature switches in `apps/ai_glass_demo/common.mk` compile; disabling EIS, RTSP, or video recording does not currently build.
+- `mtd-utils` 2.x builds `usr.jffs2` with 8 KiB erase blocks (it refuses the 4 KiB used by older bundled tools). After flashing, verify in the serial console log that the config partition mounts without JFFS2 errors.
