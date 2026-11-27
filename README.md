@@ -47,7 +47,7 @@ Then open `_build/html/index.html`. Build both languages: the language switcher 
 
 ## Related packages
 
-The [KM02G SDK](https://github.com/AnykaMicro/sdk-km02g) contains the Linux demo application and OTA build scripts. Follow [Build Environment Setup](docs/en/software/board/build-environment.md) to download the original V1.00 cross toolchain from SiFli, verify it and build the images.
+To build the Linux demo or the OTA package, use the [KM02G SDK](https://github.com/AnykaMicro/sdk-km02g) and follow [Build Environment Setup](docs/en/software/board/build-environment.md).
 
 The Anyka_Glasses companion app, the AK1090 firmware and the reference board's hardware design files have not been published with this release. They can be added in a later release when the developer makes them available.
 
@@ -106,7 +106,7 @@ python3 tools/check_links.py . _build/html
 
 ## 相关软件包
 
-[KM02G SDK](https://github.com/AnykaMicro/sdk-km02g) 已公开，包含 Linux 示例应用和 OTA 打包脚本。思澈下载站提供 V1.00 原始交叉工具链，下载、校验和生成镜像的命令见[编译环境配置](docs/zh_CN/software/board/build-environment.md)。
+编译 Linux 示例程序或 OTA 升级包，请使用 [KM02G SDK](https://github.com/AnykaMicro/sdk-km02g)，操作步骤见[编译环境配置](docs/zh_CN/software/board/build-environment.md)。
 
 Anyka_Glasses 配套 APP、AK1090 固件以及产品板硬件设计资料尚未随本次版本发布。开发者提供这些资料后，可在后续版本中补充。
 
