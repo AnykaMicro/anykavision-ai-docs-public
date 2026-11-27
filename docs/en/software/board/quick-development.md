@@ -2,7 +2,7 @@
 
 This guide takes you through building, flashing and running the glasses firmware on the reference board (KM02G series chip + AK1090 series chip).
 
-1. **Get the SDK and build it**: see [SDK Download](sdk-download.md) and [Build Environment Setup](build-environment.md). The exact commands are in the SDK README supplied with the developer-provided package.
+1. Follow [Build Environment Setup](build-environment.md) to download the KM02G SDK, install the compiler and build `tools/ota/update.bin`.
 2. **Flash the board**: see [Firmware Flashing](firmware-flashing.md).
 
 ```{note}

@@ -60,14 +60,14 @@ AnykaVision AI is for:
 
 **3. Updates**
 
-- AnykaVision AI content is updated continuously. The developer can add the public SDK repository and release links to [SDK Download](../software/board/sdk-download.md) when the packages are published.
+- [SDK Download](../software/board/sdk-download.md) lists the KM02G source repository and cross-toolchain download.
 
 ## Technical support
 
 If you run into problems while using AnykaVision AI, we suggest that you:
 
 - Check the [FAQ](../faq.md), which lists common problems and their solutions.
-- Open an issue in this documentation repository to report a documentation problem. Contact Anyka through your existing support channel for SDK or hardware support while those packages remain unpublished.
+- Open an issue in this repository to report a documentation problem. For SDK or hardware support, contact Anyka through your existing support channel.
 
 ---
 

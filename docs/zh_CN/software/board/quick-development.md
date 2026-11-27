@@ -31,32 +31,15 @@
 
 ## 第二章 环境搭建
 
-请参考[编译环境配置](build-environment.md)。
+按[编译环境配置](build-environment.md)下载 KM02G SDK、安装交叉工具链并设置设备的 root 登录方式。
 
 ---
 
 ## 第三章 固件编译
 
-### 3.1 获取SDK并准备编译
+在 SDK 根目录运行 `make`，生成 `tools/ota/update.bin`。使用 SDK 默认锁定的 root 配置时，运行 `ALLOW_LOCKED_ROOT=1 make`。
 
-按[SDK下载](sdk-download.md)和[编译环境配置](build-environment.md)完成以下准备，具体命令见 SDK README：
-
-1. 把 SDK 克隆到不含空格的路径。
-2. 运行 `./scripts/get_toolchain.sh` 安装工具链，并把 `/opt/riscv64-anyka-linux-musl/bin` 加入 `PATH`。
-3. ramdisk 无需下载：首次执行 `make` 时会下载 BusyBox 和 mtd-utils 源码包，并从源码生成 ramdisk。
-4. 把 `rootfs/config/shadow` 复制到 `rootfs/config.local/`，在副本的 `root` 行中设置密码哈希（`openssl passwd -6`），不要修改受 git 跟踪的 `rootfs/config/shadow`。每台设备或每个构建使用唯一的强密码，不要在设备上发布共用的开发密码，也不要提交或共享密码哈希。
-
-### 3.2 编译程序
-
-编译程序：可执行 `make` 命令，编译所有模块，生成升级包 `update.bin`，以及 `ramfs.img` 和 `usr.jffs2`（均位于 `tools/ota` 文件夹下）。或执行 `make clean; make app; make install` 分步骤编译（`make install` 需要先编译好应用）。
-
-分步编译：
-
-```bash
-make clean        # 清除
-make app          # 编译 app
-make install      # 打包镜像，需要先执行 make app
-```
+只修改示例程序时，运行 `make app` 即可生成 `apps/ai_glass_demo/ai_glass_demo`。
 
 ## 第四章 固件烧写
 
