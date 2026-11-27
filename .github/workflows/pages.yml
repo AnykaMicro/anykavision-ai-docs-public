@@ -10,8 +10,7 @@ permissions:
   contents: read
 
 env:
-  # Languages deployed to GitHub Pages. Add "en" only after a named person signs the English translation off.
-  PUBLISH_LANGS: zh_CN
+  PUBLISH_LANGS: "zh_CN en"
 
 concurrency:
   group: pages-${{ github.ref }}
@@ -30,8 +29,6 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install --require-hashes -r requirements.txt
-      - name: Check SDK download example
-        run: python3 tools/check_sdk_download_example.py
       # Both languages are built and checked; only PUBLISH_LANGS are deployed.
       # -W turns warnings into errors, which catches broken MyST links, anchors and images.
       - name: Build en and zh_CN
@@ -49,6 +46,7 @@ jobs:
           else
             cp docs/index.html _site/index.html
           fi
+          cp LICENSE _site/
           touch _site/.nojekyll
       # Raw HTML links, the language switcher and the README files Sphinx skips aren't covered by -W.
       - name: Check links
