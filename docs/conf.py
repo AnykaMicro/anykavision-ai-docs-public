@@ -31,8 +31,8 @@ html_sidebars = {
     ]
 }
 
-# Site URL once GitHub Pages is switched on.
-SITE = "https://anyka-micro.github.io/anykavision-ai-docs-public/"
+# Public site root for canonical and alternate-language URLs.
+SITE = "https://anykamicro.github.io/anykavision-ai-docs-public/"
 html_context = {"site_root": SITE}  # hreflang alternates in _templates/page.html
 
 
