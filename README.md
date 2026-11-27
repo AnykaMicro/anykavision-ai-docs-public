@@ -5,7 +5,7 @@ English | [简体中文](#anykavision-ai-文档)
 Documentation for **AnykaVision AI V1.00**, a development platform for AI camera glasses built on Anyka's KM02G series (image SoC) and AK1090 series (Bluetooth audio SoC) chips.
 
 - **Documentation release:** 1.0.0
-- **Website:** <https://anyka-micro.github.io/anykavision-ai-docs-public/> (pending; Pages deployment is disabled)
+- **Website:** <https://anykamicro.github.io/anykavision-ai-docs-public/>
 - **Languages:** Simplified Chinese (complete) and English (translation in progress)
 
 ## Repository layout
@@ -37,7 +37,9 @@ cp docs/index.html _build/html/
 python3 tools/check_links.py . _build/html
 ```
 
-Then open `_build/html/index.html`. Build both languages: the language switcher links between them. Content still waiting for Anyka (removed figures, text that needs a rewrite) is kept in the sources but left out of the site; add `-t anyka_review` to the `sphinx-build` commands to see it. GitHub Actions runs the same build and link check on every pull request and every push to `main`. Deployment to GitHub Pages is switched off until launch; once it is on, only the Chinese site is deployed until a named reviewer signs the English translation off (`PUBLISH_LANGS` in `.github/workflows/pages.yml`).
+Then open `_build/html/index.html`. Build both languages: the language switcher links between them. Content still waiting for Anyka (removed figures, text that needs a rewrite) is kept in the sources but left out of the site; add `-t anyka_review` to the `sphinx-build` commands to see it.
+
+GitHub Actions builds and checks both languages on every pull request and push to `main`. With the repository variable `PAGES_ENABLED` set to `true`, a successful push build on `main` publishes the Simplified Chinese site. After a named reviewer signs off on the English translation, `en` can be added to `PUBLISH_LANGS` in `.github/workflows/pages.yml`.
 
 ## Translating
 
@@ -64,7 +66,7 @@ The Anyka_Glasses companion app, the AK1090 firmware and the reference board's h
 **AnykaVision AI V1.00** 文档。AnykaVision AI 是基于安凯 KM02G 系列（图像 SoC）与 AK1090 系列（蓝牙音频 SoC）芯片的 AI 拍摄眼镜开发平台。
 
 - **文档版本：** 1.0.0
-- **网站：** <https://anyka-micro.github.io/anykavision-ai-docs-public/>（待发布；Pages 部署目前处于关闭状态）
+- **网站：** <https://anykamicro.github.io/anykavision-ai-docs-public/>
 - **语言：** 简体中文（完整）与英文（翻译中）
 
 ## 仓库结构
@@ -96,7 +98,9 @@ cp docs/index.html _build/html/
 python3 tools/check_links.py . _build/html
 ```
 
-然后打开 `_build/html/index.html`。请同时构建两种语言，语言切换链接依赖两者。仍待安凯处理的内容（已移除的图片、需要改写的文字）保留在源文件中，但不会出现在站点上；在 `sphinx-build` 命令中加上 `-t anyka_review` 即可查看。GitHub Actions 会在每个拉取请求以及推送到 `main` 时执行相同的构建和链接检查。在正式发布前，GitHub Pages 部署处于关闭状态；开启后，在英文翻译经指定审阅人确认之前只部署中文站点（见 `.github/workflows/pages.yml` 中的 `PUBLISH_LANGS`）。
+然后打开 `_build/html/index.html`。请同时构建两种语言，语言切换链接依赖两者。仍待安凯处理的内容（已移除的图片、需要改写的文字）保留在源文件中，但不会出现在站点上；在 `sphinx-build` 命令中加上 `-t anyka_review` 即可查看。
+
+GitHub Actions 会在每个拉取请求和每次推送到 `main` 时编译并检查中英文文档。仓库变量 `PAGES_ENABLED` 设为 `true` 后，推送到 `main` 并通过检查即可自动发布简体中文版。英文翻译经指定审阅人确认后，可将 `en` 加入 `.github/workflows/pages.yml` 中的 `PUBLISH_LANGS`。
 
 ## 参与翻译
 
