@@ -31,14 +31,15 @@
 
 ## 第二章 环境搭建
 
-请参考[编译环境配置](build-environment.md)。
+按[编译环境配置](build-environment.md)下载 KM02G SDK、安装交叉工具链并设置设备的 root 登录方式。
 
 ---
 
 ## 第三章 固件编译
 
-### 3.1 获取SDK并准备编译
+在 SDK 根目录运行 `make`，生成 `tools/ota/update.bin`。使用 SDK 默认锁定的 root 配置时，运行 `ALLOW_LOCKED_ROOT=1 make`。
 
+<<<<<<< prepare/developer-kit-1.0.0
 按[SDK下载](sdk-download.md)和[编译环境配置](build-environment.md)完成以下准备，具体命令见 SDK README：
 
 1. 从 1.0.0 Release 下载并校验已发布的 SDK 源码包和 BusyBox、mtd-utils 源码包；把 SDK 解压到不含空格的路径。
@@ -56,6 +57,9 @@ make clean        # 清除
 make test         # 运行主机端测试
 make app          # 编译 app
 ```
+=======
+只修改示例程序时，运行 `make app` 即可生成 `apps/ai_glass_demo/ai_glass_demo`。
+>>>>>>> main
 
 只有在另行提供的已获许可厂商格式化工具和全部完整镜像输入就绪后，才能运行 `FORMAT_TOOL_BIN=/absolute/path/to/licensed/format_tool make` 或相应的 `make install`。SDK 会把选定工具复制到镜像内的 `/etc/format_tool`。由此生成的 `update.bin`、`ramfs.img` 和 `usr.jffs2` 位于 `tools/ota`，并须通过所需的开发板验证。
 

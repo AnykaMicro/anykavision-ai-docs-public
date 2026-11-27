@@ -1,5 +1,6 @@
 # SDK Download
 
+<<<<<<< prepare/developer-kit-1.0.0
 The first 1.0.0 developer draft publishes the core KM02G SDK source and the upstream source archives needed by its build on this repository's Releases page. The SDK and support-source links below are live. The table also identifies inputs that remain gated or unavailable.
 
 Release base: `https://github.com/Anyka-Micro/anykavision-ai-docs-public/releases/download/1.0.0/`
@@ -62,3 +63,9 @@ FORMAT_TOOL_BIN="$format_tool" make
 ```
 
 The SDK performs the same executable and SHA-256 checks, then copies the approved formatter to image path `/etc/format_tool`; its default fallback is `rootfs/vendor/format_tool`. Any resulting `update.bin`, `ramfs.img` and `usr.jffs2` remain unverified development outputs until they pass the required board validation.
+=======
+- [KM02G SDK source](https://github.com/AnykaMicro/sdk-km02g) includes the Linux demo application, middleware and OTA packaging scripts.
+- [V1.00 RISC-V cross toolchain](https://downloads.sifli.com/dl/riscv64-anyka-linux-musl.tar.gz) runs on x86-64 Linux hosts.
+
+For a first build, follow [Build Environment Setup](build-environment.md) to clone the SDK, install the compiler and generate the OTA package.
+>>>>>>> main

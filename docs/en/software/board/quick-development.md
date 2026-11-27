@@ -2,6 +2,7 @@
 
 ## Chapter 1. Overview
 
+<<<<<<< prepare/developer-kit-1.0.0
 This document introduces the AI-glasses SDK reference design and helps you quickly build, flash, and run the glasses application during development.
 
 ### 1.1 Product Version
@@ -62,6 +63,10 @@ After a complete image has been built and validated, follow [Firmware Flashing](
 ---
 
 ## Chapter 5. Features
+=======
+1. Follow [Build Environment Setup](build-environment.md) to download the KM02G SDK, install the compiler and build `tools/ota/update.bin`.
+2. **Flash the board**: see [Firmware Flashing](firmware-flashing.md).
+>>>>>>> main
 
 ```{note}
 The phone-app operations below (recording-duration settings, AI image recognition, gallery import, and live-video preview) require the Anyka_Glasses app. That app was not included in this release; developers may provide its installation package in a later version.

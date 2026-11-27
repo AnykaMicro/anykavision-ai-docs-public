@@ -445,15 +445,15 @@ stMyDecoder.enType = AK_AUDIO_TYPE_MP3;
 
 stMyDecoder.pfnDecOpen = ADEC_OpenMp3;
 
-AK_IMP_ADEC_RegisterDecoder(&stMyDecoder);
+AK_MPI_ADEC_RegisterDecoder(&stMyDecoder);
 
 ```c
 ADEC_ENCODE_S stMyDecoder = {0};
 stMyDecoder.enType = AK_AUDIO_TYPE_MP3;//解码类型
 stMyDecoder.pfnDecOpen = ADEC_OpenMp3;//解码器注册回调函数
-ret = AK_IMP_ADEC_RegisterEncoder(&pstEncode);
+ret = AK_MPI_ADEC_RegisterDecoder(&pstEncode);
     if(ret) {
-        AK_BASE_PrintErrorEx(MODULE_ADEC,"AK_IMP_ADEC_RegisterEncoder failed\n");
+        AK_BASE_PrintErrorEx(MODULE_ADEC,"AK_MPI_ADEC_RegisterDecoder failed\n");
         return ret;
     }
 
@@ -733,7 +733,7 @@ AK_S32 AK_MPI_ADEC_ReleaseFrame(AK_S32 s32AdecUserId, FRAME_S *pstPcmFrame);
 
 <br/>
 
-### AK_MPI_ADEC_SendEndOfStream
+### AK_MPI_ADEC_SendEndofStream
 
 &emsp;&emsp;【描述】
 
@@ -779,7 +779,7 @@ AK_S32 AK_MPI_ADEC_SendEndofStream(AK_S32 s32AdecUserId);
 ​    【注意】
 
 - 调用此接口可以把音频编解码库的缓冲区设置为\_SD_BM_ENDING，即只要缓冲区有数据都会解码，所以最后解码出来的帧长度有可能不够一个帧长的长度。
-- AK_MPI_ADEC_SendEndOfStream函数的调用需要跟AK_MPI_ADEC_SendStream函数在同一个线程进行调用。
+- AK_MPI_ADEC_SendEndofStream函数的调用需要跟AK_MPI_ADEC_SendStream函数在同一个线程进行调用。
 
 ## 缓存状态获取
 
@@ -986,7 +986,7 @@ AK_S32 AK_MPI_ADEC_ClearDecodeBuf(AK_S32 s32AdecUserId);
 | AK_MPI_ADEC_SendStream       | AK_MPI_ADEC_Opem之后可以调用          |
 | AK_MPI_ADEC_GetFrame         | AK_MPI_ADEC_Opem之后可以调用          |
 | AK_MPI_ADEC_ReleaseFrame     | AK_MPI_ADEC_GetFrame之后调用        |
-| AK_MPI_ADEC_SendEndOfStream  | AK_MPI_ADEC_SendStream之后调用，立即生效 |
+| AK_MPI_ADEC_SendEndofStream  | AK_MPI_ADEC_SendStream之后调用，立即生效 |
 | AK_MPI_ADEC_ClearDecodeBuf   | AK_MPI_ADEC_SendStream之后调用，立即生效 |
 | AK_MPI_ADEC_Close            | AK_MPI_ADEC_Opem之后随时可以调用，立即生效   |
 | AK_MPI_ADEC_SaveFile         | AK_MPI_ADEC_Opem之后随时可以调用，立即生效   |

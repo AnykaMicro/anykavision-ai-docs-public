@@ -452,7 +452,7 @@ typedef struct akSVP_MODEL_PARAM_S
 &emsp;&emsp;【相关接口】
 
 ```C
-	ak_svp_create_chn();
+	AK_MPI_SVP_CreateChn();
 ```
 
 <br/>

@@ -1,5 +1,6 @@
 # SDK下载
 
+<<<<<<< prepare/developer-kit-1.0.0
 首个 1.0.0 开发者草案已通过本仓库的 Releases 页面发布 KM02G SDK 核心源码，以及编译所需的上游源码附件。下方 SDK 和辅助源码链接已经可用；表格同时列出仍受门禁限制或尚未提供的输入。
 
 Release 基础地址：`https://github.com/Anyka-Micro/anykavision-ai-docs-public/releases/download/1.0.0/`
@@ -62,3 +63,9 @@ FORMAT_TOOL_BIN="$format_tool" make
 ```
 
 SDK 会执行相同的可执行权限和 SHA-256 检查，再把通过校验的格式化工具复制到镜像内的 `/etc/format_tool`；默认回退路径为 `rootfs/vendor/format_tool`。生成的 `update.bin`、`ramfs.img` 和 `usr.jffs2` 在通过所需的开发板验证前，均属于未经验证的开发输出。
+=======
+- [KM02G SDK 源码](https://github.com/AnykaMicro/sdk-km02g)，包含 Linux 示例程序、中间件和 OTA 打包脚本。
+- [RISC-V 交叉工具链（V1.00）](https://downloads.sifli.com/dl/riscv64-anyka-linux-musl.tar.gz)，适用于 x86-64 Linux 主机。
+
+从零开始编译，请按[编译环境配置](build-environment.md)中的命令下载 SDK、安装工具链并生成升级包。
+>>>>>>> main

@@ -499,7 +499,7 @@ AENC_ENCODE_S pstEncode = {0};
     pstEncode.pfnEncFlush= NULL;//编码器注册回调函数
     pstEncode.pfnEncProcess= NULL;//编码器注册回调函数
     pstEncode.pfnEncReset= NULL;//编码器注册回调函数
-ret = AK_IMP_AENC_RegisterEncoder(&pstEncode);
+ret = AK_MPI_AENC_RegisterEncoder(&pstEncode);
     if(ret) {
         AK_BASE_PrintErrorEx(MODULE_AENC,"AK_IMP_AENC_RegisterEecoder failed\n");
         return ret;
