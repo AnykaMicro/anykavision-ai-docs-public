@@ -142,7 +142,7 @@
 &emsp;&emsp;【相关函数接口】
 
 ```c
-    AK_S32 AK_MPI_DEMUX_Free_Data_Info(AK_S32 s32DemuxHandleId,
+    AK_S32 AK_MPI_DEMUX_Free_Data(AK_S32 s32DemuxHandleId,
 DEMUX_VIDEO_INFO_S *pstDemuxVideoInfo);
 ```
 
@@ -561,7 +561,7 @@ DEMUX_VIDEO_INFO_S *pstDemuxVideoInfo);
 
 ```c
     AK_MPI_DEMUX_Open(&demux_param, &s32DemuxHandleId);
-    AK_MPI_DEMUX_Free_Data_Info(s32DemuxHandleId, &pstDemuxVideoInfo);
+    AK_MPI_DEMUX_Free_Data(s32DemuxHandleId, &pstDemuxVideoInfo);
     AK_MPI_DEMUX_Close(s32DemuxHandleId);
 ```
 
@@ -1005,7 +1005,7 @@ DEMUX_VIDEO_INFO_S *pstDemuxVideoInfo);
 | AK_MPI_DEMUX_Get_Version      | 无依赖                                                       |
 | AK_MPI_DEMUX_Open             | 开始时调用                                                   |
 | AK_MPI_DEMUX_Get_Total_Time   | AK_MPI_DEMUX_Open之后调用                                        |
-| AK_MPI_DEMUX_Free_Data_Info   | AK_MPI_DEMUX_Open之后调用                          |
+| AK_MPI_DEMUX_Free_Data   | AK_MPI_DEMUX_Open之后调用                          |
 | AK_MPI_DEMUX_Get_Audio_Info   | AK_MPI_DEMUX_Open之后调用                          |
 | AK_MPI_DEMUX_Seek_To_Keyframe | AK_MPI_DEMUX_Open之后调用                          |
 | AK_MPI_DEMUX_Get_Data         | AK_MPI_DEMUX_Open之后调用                                        |

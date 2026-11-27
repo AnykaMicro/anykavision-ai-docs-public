@@ -18,8 +18,8 @@ KM02G系列芯片是专为AI拍摄眼镜设计的集成式图像处理SoC。芯�
 **内存**
 <br>
   KM02G系列芯片包含KM02G1和KM02G2两款，内存大小不同。
-- KM02G1: 512Mib DDR2 SDRAM
-- KM02G2: 1Gib DDR3L SDRAM
+- KM02G1: 512 Mbit（64 MiB）DDR2 SDRAM
+- KM02G2: 1 Gbit（128 MiB）DDR3L SDRAM
 
 **摄像头**
 - 支持MIPI接口
