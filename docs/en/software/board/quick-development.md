@@ -2,7 +2,6 @@
 
 ## Chapter 1. Overview
 
-<<<<<<< prepare/developer-kit-1.0.0
 This document introduces the AI-glasses SDK reference design and helps you quickly build, flash, and run the glasses application during development.
 
 ### 1.1 Product Version
@@ -28,45 +27,23 @@ This document introduces the AI-glasses SDK reference design and helps you quick
 
 ## Chapter 2. Environment Setup
 
-See [Build Environment Configuration](build-environment.md).
+Follow [Build Environment Setup](build-environment.md) to download the KM02G SDK, install the cross toolchain, and configure root login on the device.
 
 ---
 
 ## Chapter 3. Firmware Build
 
-### 3.1 Obtain the SDK and Prepare the Build
+Run `make` from the SDK root to create `tools/ota/update.bin`. Use `ALLOW_LOCKED_ROOT=1 make` if you are using the SDK's default locked root configuration.
 
-Follow [SDK Download](sdk-download.md) and [Build Environment Configuration](build-environment.md) to complete these preparations. The exact commands are in the SDK README:
-
-1. Download and verify the released SDK source archive and the BusyBox and mtd-utils source archives from Release 1.0.0. Extract the SDK to a path containing no spaces.
-2. Put the verified BusyBox and mtd-utils source archives in the SDK's `tools/` directory.
-3. Until the toolchain public-redistribution gate passes, obtain a checksum-matched toolchain archive from Anyka and place it in `tools/`. Run `./scripts/get_toolchain.sh`, then add `/opt/riscv64-anyka-linux-musl/bin` to `PATH`.
-4. The sanitized public source archive removes the old `rootfs/skeleton/etc/format_tool`, whose provenance and licensing were unresolved. Before generating a complete ramdisk or firmware image, separately obtain the approved V1.00 formatter from Anyka under suitable license terms. It must satisfy the executable-permission and SHA-256 requirements in [SDK Download](sdk-download.md). Pass it as `FORMAT_TOOL_BIN=/absolute/path/to/licensed/format_tool`; the fallback path is `rootfs/vendor/format_tool`. Do not run a full `make` or `make install` without it.
-5. Only when generating a complete image, copy `rootfs/config/shadow` to `rootfs/config.local/` and set the password hash on the copy's `root` line using `openssl passwd -6`. Do not edit the Git-tracked `rootfs/config/shadow`. Use a unique strong password for each device or build; never ship a shared development password or commit or share password hashes.
-
-### 3.2 Build the Application
-
-The public source archive can run host-side tests and build the application:
-
-```bash
-make clean        # Clean
-make test         # Run host-side tests
-make app          # Build the app
-```
-
-Run `FORMAT_TOOL_BIN=/absolute/path/to/licensed/format_tool make` or the corresponding `make install` only after the separately supplied licensed vendor formatter and all complete-image inputs are ready. The SDK copies the selected tool into the image at `/etc/format_tool`. The resulting `update.bin`, `ramfs.img`, and `usr.jffs2` are under `tools/ota` and require the prescribed development-board validation.
+If you changed only the demo application, run `make app` to generate `apps/ai_glass_demo/ai_glass_demo`.
 
 ## Chapter 4. Firmware Flashing
 
-After a complete image has been built and validated, follow [Firmware Flashing](firmware-flashing.md) for USB-drive upgrade and factory-reset procedures. Physical-board, firmware, flashing, OTA, Wi-Fi, and USB behavior has not been verified for this documentation release.
+See [Firmware Flashing](firmware-flashing.md) for USB-drive updates and factory reset.
 
 ---
 
 ## Chapter 5. Features
-=======
-1. Follow [Build Environment Setup](build-environment.md) to download the KM02G SDK, install the compiler and build `tools/ota/update.bin`.
-2. **Flash the board**: see [Firmware Flashing](firmware-flashing.md).
->>>>>>> main
 
 ```{note}
 The phone-app operations below (recording-duration settings, AI image recognition, gallery import, and live-video preview) require the Anyka_Glasses app. That app was not included in this release; developers may provide its installation package in a later version.
