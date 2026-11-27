@@ -19,6 +19,8 @@ exclude_patterns = ["**/README.md"]  # folder indexes for GitHub browsing, not s
 
 html_theme = "furo"
 html_title = f"{project} {product_version} Documentation {release}"
+html_static_path = ["_static"]
+html_css_files = ["custom.css"]
 templates_path = ["_templates"]
 html_sidebars = {
     "**": [
