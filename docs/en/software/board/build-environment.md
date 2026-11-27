@@ -1,32 +1,60 @@
 # Build Environment Setup
 
-This page explains the SDK build steps and their caveats. The exact commands are in the SDK README supplied with the developer-provided package; this page does not repeat them. See [SDK Download](sdk-download.md) for the current availability status.
+Use x86-64 Ubuntu 22.04. On Windows, open an Ubuntu terminal in WSL2. Choose paths without spaces for the SDK and toolchain.
 
-## Build host
+## Install the host packages and get the SDK
 
-- x86-64 Linux, Ubuntu 18.04 or later. The toolchain runs only there; on macOS or Windows use a Linux VM or container. The packages to install are listed under **Host requirements** in the SDK README.
-- Clone the SDK into a path **without spaces**: the Makefiles cannot handle them.
-- `make test` (host-side unit tests) also needs `linux-libc-dev`.
-
-## Build steps
-
-Follow the **Build** section of the SDK README in order:
-
-1. **Install the toolchain**: run `./scripts/get_toolchain.sh`. When public release assets are available, it downloads the cross toolchain, checks its SHA-256 and unpacks it to `/opt`. Until then, obtain the archive from the developer and put it in `tools/` first; the script checks its SHA-256 and skips the download. Then add `/opt/riscv64-anyka-linux-musl/bin` to your `PATH`. To install elsewhere, pass the directory as the first argument; the script relocates the toolchain there.
-2. **Nothing to download for the ramdisk**: `make` builds it from the files in `rootfs/skeleton/`, BusyBox 1.35.0 and `mtd_debug` (mtd-utils 2.3.1) built from source, and your `ai_glass_demo`. The first build downloads the two source archives into `tools/` and checks their SHA-256; to build offline, put them in `tools/` yourself or set `SOURCES_URL` to a mirror.
-3. **Set a root password**: the shipped configuration locks root, so the build stops until you set a password. Copy `rootfs/config/shadow` to `rootfs/config.local/` first, then put the password hash in the second field of its `root` line; do not edit the tracked `rootfs/config/shadow`. Files in `rootfs/config.local/` replace those of `rootfs/config/` in the config image, and git ignores the folder, so the hash is never committed. Use a unique strong password for each device or build, never ship a shared development password, and never commit or share the hash.
-4. **Optional: set the debug Wi-Fi password**: copy `apps/ai_glass_demo/common/config/app_main_config.ini` to `rootfs/config.local/` and set `password=` under `[DebugAp]` (a WPA2 passphrase, 8 to 63 characters). Leaving it empty keeps the temporary debug AP and RTSP service disabled. Use a unique development-only passphrase rather than a production or corporate Wi-Fi credential. Don't put a comment after the value: everything after `=` is part of it. The other Wi-Fi files in `rootfs/config/` hold placeholders only; the app writes `hostapd.conf` and `wpa_supplicant.conf` at run time.
-5. **Build**: run `make`. The results are in `tools/ota/`: `update.bin` (OTA package), `ramfs.img` and `usr.jffs2`. `make app` builds only the application; `make install` packs the images and needs a built application; `make test` runs the host-side tests. BusyBox and `mtd_debug` are built once and kept in `rootfs/build/`; `make distclean` removes them.
-
-```{warning}
-If you build an image with no console login using `ALLOW_LOCKED_ROOT=1 make`, be careful: `update.bin` also carries the config partition, so an OTA update built that way locks root on devices already in use.
+```bash
+sudo apt update
+sudo apt install git wget ca-certificates python3 build-essential bzip2 file \
+    cpio lz4 mtd-utils u-boot-tools xxd openssl
 ```
 
-## Known limitations
+For a first build, clone the SDK. If you already have a checkout, enter its `sdk-km02g` directory.
 
-- Only the default feature switches in `apps/ai_glass_demo/common.mk` compile; turning EIS, RTSP or recording off does not build yet.
-- mtd-utils 2.x builds `usr.jffs2` with 8 KiB erase blocks (it refuses the 4 KiB that the old bundled tool used). After flashing, check on your board that the config partition mounts without JFFS2 errors.
+```bash
+mkdir -p "$HOME/src"
+git clone https://github.com/AnykaMicro/sdk-km02g.git "$HOME/src/sdk-km02g"
+cd "$HOME/src/sdk-km02g"
+```
 
-## Next step
+## Install the cross toolchain
 
-When the build finishes, follow [Firmware Flashing](firmware-flashing.md) to update the reference board with `update.bin`.
+Run these commands from the SDK root.
+
+```bash
+wget -O tools/toolchain-v1.00.tar.gz \
+    https://downloads.sifli.com/dl/riscv64-anyka-linux-musl.tar.gz
+python3 -I scripts/repack_toolchain.py \
+    tools/toolchain-v1.00.tar.gz tools/riscv64-anyka-linux-musl.tar.gz
+./scripts/get_toolchain.sh "$HOME/.local/opt"
+export PATH="$HOME/.local/opt/riscv64-anyka-linux-musl/bin:$PATH"
+```
+
+Run the last `export PATH` line in each new terminal, or add it to `~/.bashrc`.
+
+## Build the demo application
+
+For the demo executable alone, run `make app`. The output is `apps/ai_glass_demo/ai_glass_demo`.
+
+## Build the OTA package
+
+The full build also compiles the application. The first build needs internet access. For an offline build, place [busybox-1.35.0.tar.bz2](https://busybox.net/downloads/busybox-1.35.0.tar.bz2) and [mtd-utils-2.3.1.tar.bz2](https://infraroot.at/pub/mtd/mtd-utils-2.3.1.tar.bz2) in the SDK's `tools/` directory first.
+
+**To enable root login on the device**, run the following commands and enter the device password when prompted.
+
+```bash
+mkdir -p rootfs/config.local
+cp -n rootfs/config/shadow rootfs/config.local/shadow
+openssl passwd -6
+```
+
+Open `rootfs/config.local/shadow` and paste the password hash into the second field of the `root` line (between the first two colons). Save the file and build the image from the SDK root.
+
+```bash
+make
+```
+
+**To keep root locked**, leave the SDK's default `shadow` configuration in place and run `ALLOW_LOCKED_ROOT=1 make`. Applying this package locks root login on the target device.
+
+The OTA package is `tools/ota/update.bin`. The same directory contains the ramdisk (`ramfs.img`) and the configuration partition image (`usr.jffs2`). To install the update on the device, follow [Firmware Flashing](firmware-flashing.md).

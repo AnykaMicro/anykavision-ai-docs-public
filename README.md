@@ -47,7 +47,7 @@ Then open `_build/html/index.html`. Build both languages: the language switcher 
 
 ## Related packages
 
-The SDK and its release assets have not been published for public download yet. Obtain a developer-provided package from Anyka if you need to use these instructions. Maintainers can add the public repository and download links here in a later release.
+To build the Linux demo or the OTA package, use the [KM02G SDK](https://github.com/AnykaMicro/sdk-km02g) and follow [Build Environment Setup](docs/en/software/board/build-environment.md).
 
 The Anyka_Glasses companion app, the AK1090 firmware and the reference board's hardware design files have not been published with this release. They can be added in a later release when the developer makes them available.
 
@@ -106,7 +106,7 @@ python3 tools/check_links.py . _build/html
 
 ## 相关软件包
 
-SDK 及其 Release 附件尚未提供公开下载。如需按本文档操作，请先向安凯获取开发者提供的软件包。维护者可在开发者正式发布后补充公开仓库和下载链接。
+编译 Linux 示例程序或 OTA 升级包，请使用 [KM02G SDK](https://github.com/AnykaMicro/sdk-km02g)，操作步骤见[编译环境配置](docs/zh_CN/software/board/build-environment.md)。
 
 Anyka_Glasses 配套 APP、AK1090 固件以及产品板硬件设计资料尚未随本次版本发布。开发者提供这些资料后，可在后续版本中补充。
 
