@@ -1,14 +1,12 @@
 # SDK Download
 
-The SDK source and its release assets have not been published for public download yet. Obtain a developer-provided package from Anyka before following the build instructions. Maintainers can replace the placeholder below and add the release-asset links after the developer publishes them.
-
-When a public repository URL is available, clone it into a path without spaces:
+The [public KM02G SDK](https://github.com/AnykaMicro/sdk-km02g) contains the Linux demo application, middleware headers and prebuilt libraries, and the scripts that generate the OTA package. On x86-64 Linux or Ubuntu under WSL2, clone the SDK into a path without spaces.
 
 ```bash
-# Replace SDK_REPOSITORY_URL with the URL published by Anyka.
-git clone SDK_REPOSITORY_URL
+mkdir -p "$HOME/src"
+cd "$HOME/src"
+git clone https://github.com/AnykaMicro/sdk-km02g.git
+cd sdk-km02g
 ```
 
-If Anyka supplies the SDK as an archive, extract it to a path without spaces instead. Large files such as the cross toolchain are separate release assets; obtain them from the developer until public downloads are added. The SDK README included with the package identifies the required assets and checksums.
-
-After getting the SDK, see [Build Environment Setup](build-environment.md) to set up your build environment.
+Download the cross compiler separately. SiFli hosts the [original V1.00 toolchain archive](https://downloads.sifli.com/dl/riscv64-anyka-linux-musl.tar.gz). Follow [Build Environment Setup](build-environment.md) to verify and repack the archive, install the compiler and build the images.

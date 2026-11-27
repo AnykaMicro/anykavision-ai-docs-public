@@ -39,11 +39,9 @@
 
 ### 3.1 获取SDK并准备编译
 
-按[SDK下载](sdk-download.md)和[编译环境配置](build-environment.md)完成以下准备，具体命令见 SDK README：
-
-1. 把 SDK 克隆到不含空格的路径。
-2. 运行 `./scripts/get_toolchain.sh` 安装工具链，并把 `/opt/riscv64-anyka-linux-musl/bin` 加入 `PATH`。
-3. ramdisk 无需下载：首次执行 `make` 时会下载 BusyBox 和 mtd-utils 源码包，并从源码生成 ramdisk。
+1. 按[SDK下载](sdk-download.md)克隆公开的 `AnykaMicro/sdk-km02g`，进入 SDK 根目录。
+2. 按[编译环境配置](build-environment.md)安装主机软件，用 SDK 脚本校验、重打包并安装思澈下载站的 V1.00 工具链，再将交叉编译器加入 `PATH`。
+3. 首次打包时，SDK 会下载 BusyBox 和 mtd-utils 源码并生成 ramdisk。离线打包可提前将这两个源码包放入 `tools/`。
 4. 把 `rootfs/config/shadow` 复制到 `rootfs/config.local/`，在副本的 `root` 行中设置密码哈希（`openssl passwd -6`），不要修改受 git 跟踪的 `rootfs/config/shadow`。每台设备或每个构建使用唯一的强密码，不要在设备上发布共用的开发密码，也不要提交或共享密码哈希。
 
 ### 3.2 编译程序

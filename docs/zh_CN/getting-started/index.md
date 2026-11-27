@@ -60,14 +60,14 @@ AnykaVision AI适合以下开发者使用：
 
 **3. 内容更新**
 
-- AnykaVision AI 内容会持续更新。开发者正式发布软件包后，可在[SDK下载](../software/board/sdk-download.md)中补充公开 SDK 仓库和 Release 链接。
+- [SDK下载](../software/board/sdk-download.md)列出了 KM02G 源码仓库和交叉工具链的下载地址。
 
 ## 技术支持
 
 如果您在使用AnykaVision AI的过程中遇到问题，建议您：
 
 - 查阅[FAQ](../faq.md)，这里列出了常见问题及其解决方法。
-- 文档问题可在本说明文档仓库提交 issue。SDK 或硬件软件包尚未公开期间，请通过已有的安凯支持渠道获取技术帮助。
+- 文档问题可在本说明文档仓库提交 issue。如需 SDK 或硬件支持，请通过已有渠道联系安凯。
 
 ---
 
